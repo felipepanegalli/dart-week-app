@@ -58,11 +58,11 @@ class _LoginPageState extends ModularState<LoginPage, LoginController> {
         child: Column(
           children: <Widget>[
             CustomTextFormField(
-              label: 'Login',
+              label: 'Login', icon: Icons.lock,
             ),
             SizedBox(height: 30),
             CustomTextFormField(
-              label: 'Senha',
+              label: 'Senha', icon: Icons.fingerprint,
               obscureText: true,
             ),
             SizedBox(height: 30),

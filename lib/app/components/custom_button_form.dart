@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:dart_week_app/app/utils/theme_utils.dart';
 
@@ -11,7 +13,7 @@ class CustomButtonForm extends RawMaterialButton {
           onPressed: onPressed,
           child: Container(
             padding: EdgeInsets.all(10),
-            height: 60,
+            height: Platform.isIOS ? 60 : 50,
             alignment: Alignment.center,
             child: Text(
               label,
