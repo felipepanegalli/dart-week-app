@@ -1,7 +1,9 @@
+import 'package:dart_week_app/app/repositories/usuario_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:dart_week_app/app/modules/movimentacoes/components/painel_saldo/painel_saldo_widget.dart';
 import 'package:dart_week_app/app/utils/size_utils.dart';
+import 'package:get/get.dart';
 import 'components/item.dart';
 import 'movimentacoes_controller.dart';
 
@@ -35,7 +37,10 @@ class _MovimentacoesPageState
         ),
         IconButton(
           icon: Icon(Icons.exit_to_app),
-          onPressed: () {},
+          onPressed: (){
+            Modular.get<UsuarioRepository>().logout();
+            Get.offAllNamed('/');
+          },
         ),
       ],
     );

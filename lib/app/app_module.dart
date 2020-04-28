@@ -1,3 +1,4 @@
+import 'package:dart_week_app/app/repositories/usuario_repository.dart';
 import 'package:dart_week_app/app/app_controller.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +10,7 @@ import 'package:dart_week_app/app/modules/movimentacoes/movimentacoes_module.dar
 class AppModule extends MainModule {
   @override
   List<Bind> get binds => [
+        Bind((i) => UsuarioRepository()),
         Bind((i) => AppController()),
       ];
 
