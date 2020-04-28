@@ -39,7 +39,7 @@ class _MovimentacoesPageState
           icon: Icon(Icons.exit_to_app),
           onPressed: (){
             Modular.get<UsuarioRepository>().logout();
-             Get.offAllNamed('/');
+             Get.offAllNamed('/login');
           },
         ),
       ],
