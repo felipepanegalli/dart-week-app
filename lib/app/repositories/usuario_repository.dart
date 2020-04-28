@@ -1,8 +1,12 @@
 import 'package:dart_week_app/app/core/custom_dio.dart';
-import 'package:flutter_modular/flutter_modular.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class UsuarioRepository extends Disposable {
+class UsuarioRepository {
+  Future<bool> islogged() async {
+    final String token = await this.getToken();
+    return token != null;
+  }
+
   Future<bool> login(String login, String senha) {
     final dio = CustomDio().instance;
     return dio.post('/login/', data: {
@@ -29,8 +33,4 @@ class UsuarioRepository extends Disposable {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.clear();
   }
-
-  //dispose will be called automatically
-  @override
-  void dispose() {}
 }

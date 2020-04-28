@@ -1,3 +1,4 @@
+import 'package:dart_week_app/app/repositories/usuario_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:dart_week_app/app/utils/size_utils.dart';
@@ -20,7 +21,13 @@ class _HomePageState extends ModularState<HomePage, HomeController> {
   Widget build(BuildContext context) {
     ThemeUtils.init(context);
     SizeUtils.init(context);
-    Future.delayed(Duration.zero, () => Get.offAllNamed('/login'));
+    Future.delayed(Duration.zero, () async {
+      if (await Modular.get<UsuarioRepository>().islogged()) {
+        Get.offAllNamed('/movimentacoes');
+      } else {
+        Get.offAllNamed('/login');
+      }
+    });
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),

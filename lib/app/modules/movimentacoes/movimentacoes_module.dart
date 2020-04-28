@@ -1,3 +1,4 @@
+import 'package:dart_week_app/app/modules/login/login_module.dart';
 import 'package:dart_week_app/app/modules/movimentacoes/components/painel_saldo/painel_saldo_controller.dart';
 import 'package:dart_week_app/app/modules/movimentacoes/movimentacoes_controller.dart';
 import 'package:flutter_modular/flutter_modular.dart';
@@ -13,6 +14,7 @@ class MovimentacoesModule extends ChildModule {
   @override
   List<Router> get routers => [
         Router(Modular.initialRoute, child: (_, args) => MovimentacoesPage()),
+        Router('/login', module: LoginModule()),
       ];
 
   static Inject get to => Inject<MovimentacoesModule>.of();
