@@ -25,7 +25,7 @@ class CategoriaModel {
     return CategoriaModel(
       id: map['id'],
       nome: map['nome'],
-      tipo: map['tipo'],
+      tipo: map['tipocategoria'],
     );
   }
 

@@ -4,7 +4,7 @@ import 'package:dart_week_app/app/models/movimentacao_total_model.dart';
 
 class MovimentacoesRepository {
   Future<List<MovimentacaoModel>> getMovimentacoes(String mes, String ano) {
-    final dio = CustomDio.withAuthentication().instance;
+    var dio = CustomDio.withAuthentication().instance;
     return dio.get('/movimentacoes/$mes/$ano/').then((res) => res.data
         .map<MovimentacaoModel>((m) => MovimentacaoModel.fromMap(m))
         .toList());
@@ -12,7 +12,7 @@ class MovimentacoesRepository {
 
   Future<List<MovimentacaoTotalModel>> getTotalMovimentacoes(
       String mes, String ano) {
-    final dio = CustomDio.withAuthentication().instance;
+    var dio = CustomDio.withAuthentication().instance;
     return dio.get('/movimentacoes/total/$mes/$ano/').then((res) => res.data
         .map<MovimentacaoModel>((m) => MovimentacaoModel.fromMap(m))
         .toList());
@@ -20,8 +20,8 @@ class MovimentacoesRepository {
 
   Future<void> salvarMovimentacao(int categoria, DateTime dataMovimentacao,
       String descricao, double valor) {
-    final dio = CustomDio.withAuthentication().instance;
-    dio.post('/movimentacoes/', data: {
+    var dio = CustomDio.withAuthentication().instance;
+    return dio.post('/movimentacoes/', data: {
       'valor': valor,
       'descricao': descricao,
       'datamovimentacao': dataMovimentacao.toIso8601String(),

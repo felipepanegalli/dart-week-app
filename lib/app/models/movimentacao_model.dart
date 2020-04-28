@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:dart_week_app/app/models/categoria_model.dart';
+import 'package:intl/intl.dart';
 
 class MovimentacaoModel {
   int id;
@@ -20,23 +21,23 @@ class MovimentacaoModel {
   Map<String, dynamic> toMap() {
     return {
       'id': id,
-      'dataMovimentacao': dataMovimentacao?.millisecondsSinceEpoch,
+      'dataMovimentacao': dataMovimentacao.millisecondsSinceEpoch,
       'descricao': descricao,
       'valor': valor,
-      'categoria': categoria?.toMap(),
+      'categoria': categoria.toMap(),
     };
   }
 
   static MovimentacaoModel fromMap(Map<String, dynamic> map) {
     if (map == null) return null;
+    var format = DateFormat('y-MM-d');
 
     return MovimentacaoModel(
       id: map['id'],
-      dataMovimentacao:
-          DateTime.fromMillisecondsSinceEpoch(map['dataMovimentacao']),
+      dataMovimentacao: format.parse(map['datamovimentacao']),
       descricao: map['descricao'],
-      valor: map['valor'],
-      categoria: CategoriaModel.fromMap(map['categoria']),
+      valor: double.parse(map['valor']),
+      categoria: CategoriaModel.fromMap(map['categoria_id']),
     );
   }
 

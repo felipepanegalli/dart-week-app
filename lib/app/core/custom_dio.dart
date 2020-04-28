@@ -14,7 +14,10 @@ class CustomDio {
   CustomDio.withAuthentication() {
     _dio = Dio(_options);
     _dio.interceptors.add(InterceptorsWrapper(
-        onRequest: _onRequest, onResponse: _onResponse, onError: _onError));
+      onRequest: _onRequest,
+      onResponse: _onResponse,
+      onError: _onError,
+    ));
   }
 
   BaseOptions _options = BaseOptions(
@@ -29,7 +32,7 @@ class CustomDio {
 
   _onRequest(RequestOptions options) async {
     var token = await UsuarioRepository().getToken();
-    options.headers['Authorization'] = token;
+    options.headers['Authorization'] = 'Bearer $token';
   }
 
   _onResponse(Response e) {
