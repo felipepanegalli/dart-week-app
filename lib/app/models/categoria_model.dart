@@ -15,7 +15,7 @@ class CategoriaModel {
     return {
       'id': id,
       'nome': nome,
-      'tipo': tipo,
+      'tipocategoria': tipo,
     };
   }
 

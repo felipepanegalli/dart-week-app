@@ -1,4 +1,8 @@
 import 'package:dart_week_app/app/core/store_state.dart';
+import 'package:dart_week_app/app/mixins/loader_mixin.dart';
+import 'package:dart_week_app/app/modules/movimentacoes/components/cadastrar_movimentacao/cadastrar_movimentacao_controller.dart';
+import 'package:dart_week_app/app/modules/movimentacoes/components/cadastrar_movimentacao/cadastrar_movimentacao_widget.dart';
+import 'package:dart_week_app/app/modules/movimentacoes/components/painel_saldo/painel_saldo_controller.dart';
 import 'package:dart_week_app/app/repositories/usuario_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -20,15 +24,38 @@ class MovimentacoesPage extends StatefulWidget {
 }
 
 class _MovimentacoesPageState
-    extends ModularState<MovimentacoesPage, MovimentacoesController> {
+    extends ModularState<MovimentacoesPage, MovimentacoesController>
+    with LoaderMixin {
   //use 'controller' variable to access controller
   List<ReactionDisposer> disposers;
+  final cadastrarMovimentacaoController =
+      Modular.get<CadastrarMovimentacaoController>();
 
   @override
   void initState() {
     super.initState();
     disposers ??= [
-      reaction((_) => controller.painelSaldoController.data, (_) => controller.buscarMovimentacoes()),
+      reaction((_) => controller.painelSaldoController.data,
+          (_) => controller.buscarMovimentacoes()),
+      reaction((_) => cadastrarMovimentacaoController.salvarMovimentacaoStatus,
+          (_) {
+        switch (_) {
+          case StoreState.loading:
+            showLoader();
+            break;
+          case StoreState.error:
+            hideLoader();
+            Get.snackbar('Erro', 'Erro ao salvar a movimentação',
+                backgroundColor: Colors.white);
+            break;
+          case StoreState.loaded:
+            hideLoader();
+            Get.back();
+            controller.buscarMovimentacoes();
+            controller.painelSaldoController.buscarTotalMovimentacoes();
+            break;
+        }
+      }),
     ];
     controller.buscarMovimentacoes();
   }
@@ -41,10 +68,20 @@ class _MovimentacoesPageState
       actions: <Widget>[
         PopupMenuButton<String>(
           icon: Icon(Icons.add),
+          onSelected: (item) {
+            cadastrarMovimentacaoController.buscarCategorias(item);
+            _showInsertModal();
+          },
           itemBuilder: (_) {
             return [
-              PopupMenuItem<String>(value: 'receita', child: Text('Receita')),
-              PopupMenuItem<String>(value: 'despesa', child: Text('Despesa')),
+              PopupMenuItem<String>(
+                value: 'receita',
+                child: Text('Receita'),
+              ),
+              PopupMenuItem<String>(
+                value: 'despesa',
+                child: Text('Despesa'),
+              ),
             ];
           },
         ),
@@ -106,6 +143,28 @@ class _MovimentacoesPageState
         ),
         SizedBox(height: 80),
       ],
+    );
+  }
+
+  _showInsertModal() {
+    cadastrarMovimentacaoController.resetForm();
+    Get.dialog(
+      AlertDialog(
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(20))),
+        title: Text('Adicionar'),
+        content: CadastrarMovimentacaoWidget(),
+        actions: <Widget>[
+          FlatButton(
+            onPressed: () => Get.back(result: false),
+            child: Text('Cancelar'),
+          ),
+          FlatButton(
+            onPressed: () => cadastrarMovimentacaoController.salvarMovimento(),
+            child: Text('Salvar'),
+          ),
+        ],
+      ),
     );
   }
 }
