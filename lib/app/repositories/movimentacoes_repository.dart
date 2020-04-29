@@ -10,12 +10,11 @@ class MovimentacoesRepository {
         .toList());
   }
 
-  Future<MovimentacaoTotalModel> getTotalMovimentacoes(
-      String mes, String ano) {
+  Future<MovimentacaoTotalModel> getTotalMovimentacoes(String mes, String ano) {
     var dio = CustomDio.withAuthentication().instance;
-    return dio.get('/movimentacoes/total/$mes/$ano/').then((res) => res.data
-        .map<MovimentacaoModel>((m) => MovimentacaoModel.fromMap(m))
-        .toList());
+    return dio
+        .get('/movimentacoes/total/$mes/$ano/')
+        .then((res) => MovimentacaoTotalModel.fromMap(res.data));
   }
 
   Future<void> salvarMovimentacao(int categoria, DateTime dataMovimentacao,
@@ -31,4 +30,3 @@ class MovimentacoesRepository {
 }
 
 // movimentacoes/<str:tipo>/ [name='movimentacoes-by-tipo']
-

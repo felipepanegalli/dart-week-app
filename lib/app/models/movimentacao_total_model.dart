@@ -39,5 +39,4 @@ class MovimentacaoTotalModel {
       fromMap(json.decode(source));
 }
 
-
 //45
