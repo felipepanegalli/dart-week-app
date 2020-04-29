@@ -1,10 +1,8 @@
 import 'dart:convert';
 
-import 'package:dart_week_app/app/models/movimentacao_total_item_model.dart';
-
 class MovimentacaoTotalModel {
-  MovimentacaoTotalItemModel receitas;
-  MovimentacaoTotalItemModel despesas;
+  double receitas;
+  double despesas;
   double total;
   double saldo;
 
@@ -17,8 +15,8 @@ class MovimentacaoTotalModel {
 
   Map<String, dynamic> toMap() {
     return {
-      'receitas': receitas?.toMap(),
-      'despesas': despesas?.toMap(),
+      'receitas': receitas,
+      'despesas': despesas,
       'total': total,
       'saldo': saldo,
     };
@@ -28,8 +26,8 @@ class MovimentacaoTotalModel {
     if (map == null) return null;
 
     return MovimentacaoTotalModel(
-      receitas: MovimentacaoTotalItemModel.fromMap(map['receitas']),
-      despesas: MovimentacaoTotalItemModel.fromMap(map['despesas']),
+      receitas: map['receitas'],
+      despesas: map['despesas'],
       total: map['total'],
       saldo: map['saldo'],
     );
@@ -40,3 +38,6 @@ class MovimentacaoTotalModel {
   static MovimentacaoTotalModel fromJson(String source) =>
       fromMap(json.decode(source));
 }
+
+
+//45

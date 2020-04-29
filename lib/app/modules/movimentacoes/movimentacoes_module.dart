@@ -8,7 +8,7 @@ import 'package:dart_week_app/app/modules/movimentacoes/movimentacoes_page.dart'
 class MovimentacoesModule extends ChildModule {
   @override
   List<Bind> get binds => [
-        Bind((i) => PainelSaldoController()),
+        Bind((i) => PainelSaldoController(i.get<MovimentacoesRepository>())),
         Bind((i) => MovimentacoesRepository()),
         Bind((i) => MovimentacoesController(
             i.get<MovimentacoesRepository>(), i.get<PainelSaldoController>())),

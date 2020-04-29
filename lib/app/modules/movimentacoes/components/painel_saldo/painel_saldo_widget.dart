@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:dart_week_app/app/modules/movimentacoes/components/painel_saldo/painel_saldo_controller.dart';
 import 'package:dart_week_app/app/utils/size_utils.dart';
+import 'package:intl/intl.dart';
 import 'package:sliding_sheet/sliding_sheet.dart';
 
 class PainelSaldoWidget extends StatefulWidget {
@@ -15,11 +17,18 @@ class PainelSaldoWidget extends StatefulWidget {
 
 class _PainelSaldoWidgetState
     extends ModularState<PainelSaldoWidget, PainelSaldoController> {
+  
+  @override
+  void initState() {
+    super.initState();
+    controller.buscarTotalMovimentacoes();
+  }
+
   @override
   Widget build(BuildContext context) {
     return SlidingSheet(
-        elevation: 10,
-        cornerRadius: 20,
+      elevation: 10,
+      cornerRadius: 20,
       snapSpec: SnapSpec(
         snap: true,
         snappings: [.1, .4],
@@ -36,12 +45,17 @@ class _PainelSaldoWidgetState
         );
       },
       builder: (_, state) {
-        return _makeContent();
+        return Observer(builder: (_) {
+          return _makeContent();
+        });
       },
     );
   }
 
   Widget _makeContent() {
+    var model = controller.movimentacaoTotalModel;
+    var numberFormat = NumberFormat('###.00', 'pt_BR');
+
     return Container(
       width: SizeUtils.widthScreen,
       height: SizeUtils.heightScreen * .4 - widget.appBarHeight,
@@ -52,16 +66,22 @@ class _PainelSaldoWidgetState
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              IconButton(icon: Icon(Icons.arrow_back_ios), onPressed: () {}),
+              IconButton(
+                icon: Icon(Icons.arrow_back_ios),
+                onPressed: () => controller.previousMonth(),
+              ),
               Text(
-                'Janeiro/2020',
+                DateFormat('MMMM yyyy', 'pt_BR').format(controller.data),
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
                   color: Colors.green,
                 ),
               ),
-              IconButton(icon: Icon(Icons.arrow_forward_ios), onPressed: () {}),
+              IconButton(
+                icon: Icon(Icons.arrow_forward_ios),
+                onPressed: () => controller.nextMonth(),
+              ),
             ],
           ),
           SizedBox(height: 20),
@@ -69,7 +89,7 @@ class _PainelSaldoWidgetState
             children: <Widget>[
               Text('Saldo'),
               Text(
-                'R\$ 2000.00',
+                'R\$ ${numberFormat.format(model.saldo)}',
                 style: TextStyle(
                   fontSize: 30,
                   fontWeight: FontWeight.bold,
@@ -82,8 +102,8 @@ class _PainelSaldoWidgetState
             child: Container(),
           ),
           Container(
-              margin: EdgeInsets.only(bottom: 30),
-              padding: EdgeInsets.symmetric(horizontal: 20),
+            margin: EdgeInsets.only(bottom: 30),
+            padding: EdgeInsets.symmetric(horizontal: 20),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[

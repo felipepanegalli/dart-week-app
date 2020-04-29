@@ -22,10 +22,14 @@ class MovimentacoesPage extends StatefulWidget {
 class _MovimentacoesPageState
     extends ModularState<MovimentacoesPage, MovimentacoesController> {
   //use 'controller' variable to access controller
+  List<ReactionDisposer> disposers;
 
   @override
   void initState() {
     super.initState();
+    disposers ??= [
+      reaction((_) => controller.painelSaldoController.data, (_) => controller.buscarMovimentacoes()),
+    ];
     controller.buscarMovimentacoes();
   }
 

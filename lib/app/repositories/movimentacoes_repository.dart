@@ -10,7 +10,7 @@ class MovimentacoesRepository {
         .toList());
   }
 
-  Future<List<MovimentacaoTotalModel>> getTotalMovimentacoes(
+  Future<MovimentacaoTotalModel> getTotalMovimentacoes(
       String mes, String ano) {
     var dio = CustomDio.withAuthentication().instance;
     return dio.get('/movimentacoes/total/$mes/$ano/').then((res) => res.data
